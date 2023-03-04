@@ -8,10 +8,8 @@ def then(arg1, arg2):
     plt.plot( arg2['Close_x'], 'o')
     plt.show()
 
-    
     then = pd.merge(arg1, arg2, how = "left", on = "Date")
     
-
     print(len(arg1))
     print(len(then.dropna()))
     print(len(then))
@@ -22,7 +20,6 @@ def then(arg1, arg2):
 
 def ticker(tkr_str):
     tkr = yf.Ticker(tkr_str).history(period="8mo")
-    
     # print(tkr)
     return tkr
 
@@ -41,10 +38,16 @@ def n_time_average(tkr, days):
     return ndf["Close"].mean()
 
 
-def compair_filter(arg1, arg2):
-    # filters arg1 when arg1 is greater than arg2
+def compair_filter(arg1, arg2, direction):
+
+    # filters arg1 when arg1 is greater/less than than arg2
+    # if direction is true, then it is greater than
+    
     filter = pd.merge(arg1, arg2, on = "Date").dropna()
-    filter = filter.loc[filter["Close_x"] > filter["Close_y"]]
+    if direction:
+        filter = filter.loc[filter["Close_x"] > filter["Close_y"]]
+    else:
+        filter = filter.loc[filter["Close_x"] < filter["Close_y"]]
     return filter[["Close_x"]]
 
 def moving_average(tkr, window):

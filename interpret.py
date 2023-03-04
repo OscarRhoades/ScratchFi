@@ -19,7 +19,7 @@ def apply(block):
         case "moving_average":
             return e.moving_average(apply(block["arg1"]), int(block["window"]))
         case "compair_filter":
-            return e.compair_filter(apply(block["arg1"]), apply(block["arg2"]))
+            return e.compair_filter(apply(block["arg1"]), apply(block["arg2"]), bool(block["direction"]))
 
 
 apply(data)

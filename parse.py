@@ -27,11 +27,12 @@ def moving_average_json(arg1, window):
 
 
 
-def compair_filter_json(arg1, arg2):
+def compair_filter_json(arg1, arg2, direction):
     compair_filter = {
         "type": "compair_filter",
         "arg1": arg1,
-        "arg2": arg2
+        "arg2": arg2,
+        "direction": direction
     }
     return compair_filter
 
@@ -43,7 +44,7 @@ def derivative_json(arg1):
 
     
 
-object_program = then_json(compair_filter_json(ticker_json("AMZN"),moving_average_json(ticker_json("AMZN"), 30)), compair_filter_json(ticker_json("GLD"),moving_average_json(ticker_json("GLD"), 30)))
+object_program = then_json(compair_filter_json(ticker_json("AMZN"),moving_average_json(ticker_json("AMZN"), 30), False), compair_filter_json(ticker_json("GLD"),moving_average_json(ticker_json("GLD"), 30), False))
 
 json_object = json.dumps(object_program, indent = 4) 
 print(json_object)
