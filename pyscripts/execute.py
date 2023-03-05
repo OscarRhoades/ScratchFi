@@ -4,24 +4,28 @@ import matplotlib.pyplot as plt
 
 def then(arg1, arg2):
 
-    plt.plot( arg1['Close_x'], 'o')
-    plt.plot( arg2['Close_x'], 'o')
-    plt.show()
 
-    then = pd.merge(arg1, arg2, how = "left", on = "Date")
+    # plt.plot( arg1, 'o')
+    # plt.plot( arg2, 'o')
+    # plt.show()
+
+    then = pd.merge(arg1, arg2,  how = "left", on = "Date")
     
-    print(len(arg1))
-    print(len(then.dropna()))
-    print(len(then))
-    print(then)
+    # print("validity:" + str(len(then.dropna())/len(arg1)))
+    # print(len(then.dropna()))
+    # print(len(arg1))
 
+    # plt.plot( then['Close_x_x'], 'o')
+    # plt.plot( then['Close_x_y'], 'o')
+    # plt.show()
+    
     return then
 
 
 def ticker(tkr_str):
     tkr = yf.Ticker(tkr_str).history(period="8mo")
     # print(tkr)
-    return tkr
+    return tkr["Close"]
 
 
 def n_time_average(tkr, days):
@@ -37,24 +41,33 @@ def n_time_average(tkr, days):
 
     return ndf["Close"].mean()
 
+def oversold(arg1, window, p):
+    # needes to have a single column
+    return arg1.rolling(window=window).quantile(p)
+    
+
+# .iloc[:,0]
 
 def compair_filter(arg1, arg2, direction):
 
     # filters arg1 when arg1 is greater/less than than arg2
     # if direction is true, then it is greater than
     
+
     filter = pd.merge(arg1, arg2, on = "Date").dropna()
+    # print(filter)
     if direction:
-        filter = filter.loc[filter["Close_x"] > filter["Close_y"]]
+        filter = filter.loc[filter.iloc[:,0] > filter.iloc[:,1]]
     else:
-        filter = filter.loc[filter["Close_x"] < filter["Close_y"]]
-    return filter[["Close_x"]]
+        filter = filter.loc[filter.iloc[:,0] < filter.iloc[:,1]]
+    return filter.iloc[:,0]
 
 def moving_average(tkr, window):
-    # this gives a dataframe
+    # needs to have a single column
 
+    # this gives a dataframe
     # Make this open/close an advanced option parameter
-    moving_average = tkr["Close"].rolling(window=window).mean()
+    moving_average = tkr.rolling(window=window).mean()
     return moving_average
 
 
