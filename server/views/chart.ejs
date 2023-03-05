@@ -30,16 +30,15 @@
 
         let data = {
           datasets: [{
-            label: JSON.stringify(x.dataset_1[0].data),
+            label: x.labels[0],
             data: x.dataset_1[0].data,
             backgroundColor: 'rgb(255, 99, 132)',
             
           },
           {
-          label: JSON.stringify(x.dataset_2[0].data),
+          label: x.labels[1],
             data: x.dataset_2[0].data,
             backgroundColor: 'rgb(144, 233, 144)',
-            
           }
           ]
         };
